@@ -12,14 +12,17 @@ const ItemInput = ({ id, onKeyDown, visibility, idAddButton, addItem }) => {
         name: { name: value },
         id,
     };
+
     const confirmClick = () => {
         addItem(data)
         resetValue()
     };
+
     function resetValue() {
         setValue('')
     }
-    if (visibility && id == idAddButton) {
+
+    if (visibility && (id == idAddButton)) {
         return (
             <Stack direction={['row']} spacing='5px' mt='2px'>
                 <Input

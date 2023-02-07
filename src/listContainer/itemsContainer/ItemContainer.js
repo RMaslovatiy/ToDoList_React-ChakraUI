@@ -1,10 +1,14 @@
-import { Box, Flex, Checkbox } from "@chakra-ui/react";
-import { useDispatch } from 'react-redux'
-import { toggleIsDone } from '../../redux/reducers/lists/asyncThunks';
+import { SkeletonText, Text, Flex, Checkbox } from "@chakra-ui/react";
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleIsDone } from '../../redux/reducers/list/asyncThunks';
+import ItemMenu from "../../ItemMenu";
 
 
-const ItemContainer = ({ list }) => {
+
+const ItemContainer = () => {
+    const list = useSelector((state) => state.list.data)
     const dispatch = useDispatch();
+
     const changeIsDone = (item) => {
         const data = {
             list,
@@ -15,32 +19,35 @@ const ItemContainer = ({ list }) => {
     if (list.items && list.items.length > 0) {
         return (
             <>
-                <Box
-                    display='flex'
-                    key={list.id}
-                    color='gray.600'
-                    fontWeight='semibold'
-                    letterSpacing='wide'
-                    fontSize='s'
-                    ml='2'
-                >
-                    Items:
-                </Box>
                 {list.items.map(item => (
+
                     <Flex
-                        color='gray.400'
-                        ml='30px'
+                        onDragEnd={() => console.log('droped')}
+                        justifyContent='space-between'
+                        m='10px'
                         key={item.id}>
                         <Checkbox
+                            size='lg'
                             isChecked={item.isDone}
-                            as={item.isDone ? 'del' : null}
-                            onChange={(e) => changeIsDone(item)}>
+                            onChange={(e) => changeIsDone(item)}
+                            as={item.isDone ? 'del' : null}>
                             {item.name}
                         </Checkbox>
+                        <ItemMenu />
                     </Flex>
                 ))}
             </>
         );
+    } else {
+        return (
+            <>
+                <SkeletonText startColor='gray.700'
+                    noOfLines={1} skeletonHeight='5' />
+                <Text mt='2px' mb='2px' background='gray.700'>No items</Text>
+                <SkeletonText startColor='gray.700'
+                    noOfLines={1} spacing='4' skeletonHeight='5' />
+            </>
+        )
     }
 };
 

@@ -1,13 +1,22 @@
 import { useSelector } from "react-redux";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import ListEl from "./ListEl";
 
 
-const ListContainer = () => {
+
+const ListContainer = ({ lists }) => {
     return (
-        <Box >
-            <ListEl />
-        </Box>
+        <Flex
+            flexDirection='column'
+            h='90%'
+            w='100%'
+        >
+            Task lists
+            {lists.map(list => (
+                <ListEl key={list.id} list={list} />
+            ))}
+
+        </Flex>
     )
 }
 

@@ -56,17 +56,6 @@ export const listsSlice = createSlice({
       }
     });
 
-    builder.addCase(toggleIsDone.fulfilled, (state, action) => {
-      const list = state.data.find(
-        (list) => list.id === action.payload.data.list.id
-      );
-      list.items.forEach((item) => {
-        if (item.id === action.payload.data.item.id) {
-          item.isDone = !item.isDone;
-        }
-      });
-    });
-
     builder.addCase(delItem.fulfilled, (state, action) => {
 
       // const list = state.data.find((list) => list.id === action.payload.list.id);

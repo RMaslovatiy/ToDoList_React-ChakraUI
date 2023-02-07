@@ -1,75 +1,53 @@
-import { Container, Divider, Flex, Button, Spacer, Box, Input } from "@chakra-ui/react";
-import { useSelector, useDispatch } from "react-redux";
-import ItemContainer from "./itemsContainer/ItemContainer";
-import { delList } from "../redux/reducers/lists/asyncThunks"
-import { useDisclosure } from "@chakra-ui/react";
-import ItemInput from "./ItemInput";
+import { Container, Divider, IconButton, Spacer, ButtonGroup, Flex, Button } from "@chakra-ui/react";
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
+import { useDispatch } from "react-redux";
 import React, { useState } from "react";
-import { postItem, delItem } from "../redux/reducers/lists/asyncThunks";
-import TodoStore from '../mobx/store';
-import { observer } from 'mobx-react-lite'
+import { setList } from "../redux/reducers/list/listReducer";
 
-const ListEl = observer(() => {
+
+const ListEl = ({ list }) => {
 
     // const lists = TodoStore.lists; //mobx//
 
     const dispatch = useDispatch();
-    const [idAddButton, setIdAddButton] = useState();
-    const [visibleItemInput, setVisibleItemInput] = useState(false);
-    const lists = useSelector((state) => state.lists.data); //redux//
-
-    const showItemInput = (e) => {
-        setVisibleItemInput((visibleItemInput) => !visibleItemInput);
-        setIdAddButton(e.target.id);
-    };
-
-    const handleEnterForAddItem = (event, data, resetValue) => {
-        if (event.key === "Enter") {
-            addItem(data);
-            resetValue();
-        }
-    };
-
-    const addItem = (data) => {
-        dispatch(postItem(data));
-        setVisibleItemInput(false);
-    };
-
+    const [visibleButtons, setVisibleButtons] = useState(false);
     return (
-        lists.map(list => (
-            <Container w='350px' key={list.id}>
-                <Flex  >
-                    <Button
-                        mr='6px'
-                        variant='ghost'
-                        size='s'
-                        id={list.id}
-                        onClick={(e) => showItemInput(e)}>
-                        +</Button>
-                    <Spacer />
+
+        <Container
+            w='100%'>
+            <Flex
+                justifyContent='space-between'
+                alignItems='center'
+                w='100%'
+                cursor='pointer'
+                m='5px'
+            >
+                <Button
+                    onMouseEnter={() => setVisibleButtons(true)}
+                    onMouseLeave={() => setVisibleButtons(false)}
+                    draggable="true"
+                    onDragStart={() => dispatch(setList(list))}
+                    background='none'
+                    w='90%'>
                     {list.title}
-                    <Spacer />
-                    <Button
-                        mr='6px'
-                        variant='ghost'
-                        size='s'
+                </Button>
+                <Spacer />
+                {visibleButtons ?
+                    <ButtonGroup
                         id={list.id}
-                        onClick={() => dispatch(delList(list.id))}
-                    >
-                        Х</Button>
-                </Flex>
-                <Divider />
-                <ItemInput
-                    id={list.id}
-                    list={list}
-                    onKeyDown={handleEnterForAddItem}
-                    visibility={visibleItemInput}
-                    idAddButton={idAddButton}
-                    addItem={addItem} />
-                <ItemContainer list={list} />
-            </Container>
-        ))
+                        size='xs'>
+                        <IconButton icon={<EditIcon />} />
+                        <IconButton icon={<DeleteIcon />} />
+                    </ButtonGroup>
+                    : <></>
+                }
+            </Flex>
+            <Divider w='110%' />
+        </Container>
+
     )
-})
+}
 
 export default ListEl
+
+

@@ -1,4 +1,5 @@
-import { Input, Button, Stack } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { postList } from "./redux/reducers/lists/asyncThunks";
@@ -17,20 +18,17 @@ const AddList = () => {
     };
 
     return (
-        <Stack direction={['row']} spacing='5px' mt='2px'>
-            <Input w='325px'
-                onKeyDown={handleEnter}
-                placeholder="Введіть задачу"
-                value={value}
-                onChange={(e) => setValue(e.target.value)} />
-
+        <Flex
+            w='100%'
+            h='10%'>
             <Button
-                variant='solid'
-                onClick={addTask}
+                w='100%'
+                leftIcon={<AddIcon />}
+                background='gray.700'
             >
-                OK
+                Add new list
             </Button>
-        </Stack>
+        </Flex>
     )
 
 }
