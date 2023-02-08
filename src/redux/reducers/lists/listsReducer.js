@@ -1,9 +1,16 @@
-import { createSlice, current } from "@reduxjs/toolkit";
-import { getTodoLists, postList, editList, delList, postItem, delItem, toggleIsDone } from "./asyncThunks";
-
+import { createSlice, current } from '@reduxjs/toolkit';
+import {
+  getTodoLists,
+  postList,
+  editList,
+  delList,
+  postItem,
+  delItem,
+  toggleIsDone,
+} from './asyncThunks';
 
 export const listsSlice = createSlice({
-  name: "lists",
+  name: 'lists',
   initialState: {
     data: [],
     isLoading: false,
@@ -12,8 +19,6 @@ export const listsSlice = createSlice({
     setLists(state, action) {
       state.data = action.payload;
     },
-
-
   },
   extraReducers(builder) {
     builder.addCase(getTodoLists.fulfilled, (state, action) => {
@@ -30,23 +35,20 @@ export const listsSlice = createSlice({
     });
 
     builder.addCase(editList.fulfilled, (state, action) => {
-
-      state.data = state.data.map((list) => {
+      state.data = state.data.map(list => {
         if (list.id === action.payload.id) {
-          return action.payload
+          return action.payload;
         }
         return list;
-      })
+      });
     });
 
     builder.addCase(delList.fulfilled, (state, action) => {
-      state.data = state.data.filter((list) => list.id !== action.payload);
+      state.data = state.data.filter(list => list.id !== action.payload);
     });
 
     builder.addCase(postItem.fulfilled, (state, action) => {
-      const list = state.data.find(
-        (list) => list.id === action.payload.data.id
-      );
+      const list = state.data.find(list => list.id === action.payload.data.id);
 
       if (list) {
         if (!Array.isArray(list.items)) {
@@ -57,27 +59,25 @@ export const listsSlice = createSlice({
     });
 
     builder.addCase(delItem.fulfilled, (state, action) => {
-
       // const list = state.data.find((list) => list.id === action.payload.list.id);
       // list.items.filter((item) => item.id !== action.payload.itemId);
 
       //=================================
 
-      state.data = state.data.map((innerList) => {
+      state.data = state.data.map(innerList => {
         if (action.payload.list.id === innerList.id) {
           return {
             ...innerList,
             items: innerList.items.filter(
-              (item) => item.id !== action.payload.itemId
+              item => item.id !== action.payload.itemId
             ),
           };
         }
         return innerList;
       });
-
     });
   },
 });
 
-export const { } = listsSlice.actions;
+export const {} = listsSlice.actions;
 export default listsSlice.reducer;
