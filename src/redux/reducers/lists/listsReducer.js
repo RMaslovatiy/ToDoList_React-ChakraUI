@@ -1,19 +1,60 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getTodoLists, postList, editList, delList, postItem, delItem, toggleIsDone } from "./asyncThunks";
-
+import {
+  getTodoLists,
+  postList,
+  editList,
+  delList,
+  postItem,
+  delItem,
+  toggleIsDone,
+} from "./asyncThunks";
 
 export const listsSlice = createSlice({
   name: "lists",
   initialState: {
-    data: [],
+    data: [
+      {
+        id: 1,
+        title: "List 1",
+      },
+      {
+        id: 2,
+        title: "List 2",
+      },
+      {
+        id: 3,
+        title: "List 3",
+      },
+      {
+        id: 4,
+        title: "List 4",
+      },
+      {
+        id: 5,
+        title: "List 5",
+      },
+      {
+        id: 6,
+        title: "List 6",
+      },
+    ],
+
+    columns: {
+      "column-1": {
+        id: "column-1",
+        title: " BUILDER BLOCKS",
+        tasksIds: [1, 2, 4],
+      },
+    },
+
+    columnOrder: ["column-1"],
+
     isLoading: false,
   },
   reducers: {
     setLists(state, action) {
       state.data = action.payload;
     },
-
-
   },
   extraReducers(builder) {
     builder.addCase(getTodoLists.fulfilled, (state, action) => {
@@ -30,13 +71,12 @@ export const listsSlice = createSlice({
     });
 
     builder.addCase(editList.fulfilled, (state, action) => {
-
       state.data = state.data.map((list) => {
         if (list.id === action.payload.id) {
-          return action.payload
+          return action.payload;
         }
         return list;
-      })
+      });
     });
 
     builder.addCase(delList.fulfilled, (state, action) => {
@@ -57,7 +97,6 @@ export const listsSlice = createSlice({
     });
 
     builder.addCase(delItem.fulfilled, (state, action) => {
-
       // const list = state.data.find((list) => list.id === action.payload.list.id);
       // list.items.filter((item) => item.id !== action.payload.itemId);
 
@@ -74,10 +113,9 @@ export const listsSlice = createSlice({
         }
         return innerList;
       });
-
     });
   },
 });
 
-export const { } = listsSlice.actions;
+export const {} = listsSlice.actions;
 export default listsSlice.reducer;
