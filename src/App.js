@@ -1,24 +1,7 @@
-import React from 'react';
-import {
-  ChakraProvider,
-  Box,
-  Grid,
-  theme,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import BuildToDo from './BuildToDo';
+import MyDropzone from "./MyDropzone";
 
 function App() {
-  return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl" >
-        <Grid p={3} >
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <BuildToDo />
-        </Grid>
-      </Box>
-    </ChakraProvider>
-  );
+  return <MyDropzone />;
 }
 
 export default App;
